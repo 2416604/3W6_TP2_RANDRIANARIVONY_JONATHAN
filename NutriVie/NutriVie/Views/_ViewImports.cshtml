@@ -1,4 +1,6 @@
-﻿@using NutriVie.Models
+﻿@using NutriVie
+@using NutriVie.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,10 +28,10 @@
                         <a asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                     </li>
                     <li>
-                        <a asp-area="">Catégories</a>
+                        <a asp-area="" asp-controller="Categories" asp-action="Index">Catégories</a>
                     </li>
                     <li>
-                        <a asp-area="">Recettes</a>
+                        <a asp-area="" asp-controller="Recettes" asp-action="Index">Recettes</a>
                     </li>
                 </ul>
             </nav>
@@ -56,10 +58,10 @@
                         <a asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                     </li>
                     <li>
-                        <a asp-area="">Catégories</a>
+                        <a asp-area="" asp-controller="Categories" asp-action="Index">Catégories</a>
                     </li>
                     <li>
-                        <a asp-area="">Recettes</a>
+                        <a asp-area="" asp-controller="Recettes" asp-action="Index">Recettes</a>
                     </li>
                 </ul>
             </nav>
