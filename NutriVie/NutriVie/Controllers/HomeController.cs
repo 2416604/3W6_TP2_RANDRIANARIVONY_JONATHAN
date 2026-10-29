@@ -1,14 +1,26 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NutriVie.Models;
+using NutriVie.Models.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace NutriVie.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+        private readonly NutriVieDbContext _context;
+
+        public HomeController(NutriVieDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var services = await _context.Services.ToListAsync();
+            return View(services);
         }
 
         public IActionResult Privacy()
