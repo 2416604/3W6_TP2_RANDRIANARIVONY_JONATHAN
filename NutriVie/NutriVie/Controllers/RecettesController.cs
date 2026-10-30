@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NutriVie.Models.Data;
 
@@ -13,10 +14,18 @@ public class RecettesController : Controller
     }
 
     // GET: RECETTES
-    public async Task<IActionResult> Index()    
+
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Recettes.ToListAsync());
+        var recettes = await _context.Recettes
+            .Include(r => r.Categorie)
+            .OrderBy(r => r.Categorie.Nom)
+            .ThenBy(r => r.Nom)
+            .ToListAsync();
+
+        return View(recettes);
     }
+
 
     // GET: RECETTES/Details/5
     public async Task<IActionResult> Details(int? id)
@@ -27,6 +36,7 @@ public class RecettesController : Controller
         }
 
         var recette = await _context.Recettes
+            .Include(r => r.Categorie)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (recette == null)
         {
@@ -39,6 +49,7 @@ public class RecettesController : Controller
     // GET: RECETTES/Create
     public IActionResult Create()
     {
+        ViewBag.Categories = new SelectList(_context.Categories, "Id", "Nom");
         return View();
     }
 
@@ -55,6 +66,8 @@ public class RecettesController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        ViewBag.Categories = new SelectList(_context.Categories, "Id", "Nom");
         return View(recette);
     }
 
@@ -71,6 +84,7 @@ public class RecettesController : Controller
         {
             return NotFound();
         }
+
         return View(recette);
     }
 
@@ -106,6 +120,8 @@ public class RecettesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+
+       
         return View(recette);
     }
 
@@ -118,6 +134,7 @@ public class RecettesController : Controller
         }
 
         var recette = await _context.Recettes
+            .Include(r => r.Categorie)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (recette == null)
         {
