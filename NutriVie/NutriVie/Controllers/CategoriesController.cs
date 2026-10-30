@@ -13,9 +13,14 @@ public class CategoriesController : Controller
     }
 
     // GET: CATEGORIES
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Categories.ToListAsync());
+        var categories = await _context.Categories
+            .Include(c => c.Recettes)
+            .OrderByDescending(c => c.Nom)
+            .ToListAsync();
+
+        return View(categories);
     }
 
     // GET: CATEGORIES/Details/5
@@ -49,12 +54,18 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Nom,Recettes")] Categorie categorie)
     {
+        if (await _context.Categories.AnyAsync(c => c.Nom.ToLower() == categorie.Nom.ToLower()))
+        {
+            ModelState.AddModelError("Nom", "Cette catégorie existe déjà.");
+        }
+
         if (ModelState.IsValid)
         {
             _context.Add(categorie);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
         return View(categorie);
     }
 
@@ -132,10 +143,18 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var categorie = await _context.Categories.FindAsync(id);
+        var categorie = await _context.Categories
+       .Include(c => c.Recettes)
+       .FirstOrDefaultAsync(c => c.Id == id);
         if (categorie != null)
         {
             _context.Categories.Remove(categorie);
+        }
+
+        if (categorie.Recettes.Any())
+        {
+            ModelState.AddModelError("", "Impossible de supprimer une catégorie qui contient des recettes.");
+            return View("Delete", categorie);
         }
 
         await _context.SaveChangesAsync();
