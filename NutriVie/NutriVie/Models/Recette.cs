@@ -27,4 +27,7 @@ public class Recette
     [ValidateNever]
     public Categorie Categorie { get; set; }
 
+
+    [ValidateNever]
+    public List<AlimentRecette> AlimentRecettes { get; set; }
 }

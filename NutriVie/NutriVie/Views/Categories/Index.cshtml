@@ -28,7 +28,18 @@
                 @Html.DisplayFor(model => item.Nom)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Recettes)
+
+                    @foreach (var recette in item.Recettes.OrderBy(r => r.Nom))
+                    {
+                        <div>
+                            <a asp-controller="Recettes"
+                               asp-action="Edit"
+                               asp-route-id="@recette.Id">
+                                @recette.Nom (@recette.TempsPreparation min)
+                            </a>
+                        </div>
+                    }
+
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
