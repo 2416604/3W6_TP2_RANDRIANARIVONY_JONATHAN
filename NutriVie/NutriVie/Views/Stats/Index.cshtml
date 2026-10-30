@@ -1,0 +1,36 @@
+﻿@model StatVM
+
+@{
+    ViewData["Title"] = "Stats";
+}
+
+<h1>Stats</h1>
+
+<p>Le nombre de recettes avec 3 aliments : <strong>@Model.Recettes3Aliments</strong></p>
+
+<p>L'aliment le plus calorique : <strong>@Model.AlimentPlusCalorique</strong></p>
+
+<p>La liste des 4 recettes qui ont le plus court temps total (préparation et cuisson) en affichant le nom et le temps total</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nom de la recette</th>
+            <th>Temps total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var recette in Model.RecettesPlusRapides)
+        {
+            <tr>
+                <td>@recette.Nom</td>
+                <td>@(recette.TempsPreparation + recette.TempsCuisson)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    Le nombre de calories de la recette française la moins calorique :
+    <p>@Model.CaloriesRecetteFrancaiseMoinsCalorique</p>
+</p>
