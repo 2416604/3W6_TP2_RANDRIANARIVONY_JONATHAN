@@ -2,7 +2,7 @@
 {
     public class RecetteCategorieVM
     {
-        public string NomCatergorie { get; set; }
+        public string NomCategorie { get; set; }
         public List<RecetteInfoVM> Recettes { get; set; }
     }
 }

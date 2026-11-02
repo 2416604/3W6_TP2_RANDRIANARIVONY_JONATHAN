@@ -1,0 +1,34 @@
+﻿@model RecetteInfoVM
+
+@{
+
+	string statut;
+	string couleur;
+
+	if (Model.TempsTotal <= 50)
+	{
+		statut = "Recette de courte durée";
+		couleur = "text-success";
+
+	}
+	else if (Model.TempsTotal <= 90)
+	{
+		statut = "Recette de durée moyenne";
+		couleur = "text-warning";
+
+	}
+	else
+	{
+
+		statut = " Recette de longue durée";
+		couleur = "text-danger";
+	}
+
+}
+
+<tr>
+	<td>@Model.Nom</td>
+	<td>@Model.NombreIngredients</td>
+	<td>@Model.TempsTotal</td>
+	<td class="@couleur">@statut</td>
+</tr>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NutriVie.Models;
 using NutriVie.Models.Data;
 
 public class RecettesController : Controller
@@ -121,7 +122,7 @@ public class RecettesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-       
+
         return View(recette);
     }
 
@@ -162,5 +163,23 @@ public class RecettesController : Controller
     private bool RecetteExists(int? id)
     {
         return _context.Recettes.Any(e => e.Id == id);
+    }
+
+    public async Task<IActionResult> ToutesLesRecettes()
+    {
+        var categories = await _context.Categories
+            .Select(c => new RecetteCategorieVM
+            {
+                NomCategorie = c.Nom,
+                Recettes = c.Recettes.Select(r => new RecetteInfoVM
+                {
+                    Nom = r.Nom,
+                    NombreIngredients = r.AlimentRecettes.Count(),
+                    TempsTotal = r.TempsPreparation + r.TempsCuisson
+                }).ToList()
+            })
+            .ToListAsync();
+
+        return View(categories);
     }
 }

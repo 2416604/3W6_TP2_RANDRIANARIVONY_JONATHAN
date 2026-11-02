@@ -1,0 +1,18 @@
+﻿@model RecetteCategorieVM
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Nombre d'ingrédients</th>
+            <th>Temps total</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var recette in Model.Recettes)
+        {
+            <partial name="_RecetteInfo" model="recette" />
+        }
+    </tbody>
+</table>
